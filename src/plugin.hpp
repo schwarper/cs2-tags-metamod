@@ -8,6 +8,7 @@
 #include <igameeventsystem.h> // Required by igameevents.h
 #include <igameevents.h>
 
+
 class Plugin : public ISmmPlugin, public IMetamodListener, public IGameEventListener2
 {
   public:
@@ -31,12 +32,12 @@ class Plugin : public ISmmPlugin, public IMetamodListener, public IGameEventList
 
     const char* GetName() override
     {
-        return "Plogon";
+        return "[Metamod] Tag";
     }
 
     const char* GetDescription() override
     {
-        return "Plogon";
+        return "Metamod plugin for cs2-tags";
     }
 
     const char* GetURL() override
@@ -77,9 +78,16 @@ class Plugin : public ISmmPlugin, public IMetamodListener, public IGameEventList
     void Hook_ClientCommand(CPlayerSlot nSlot, const CCommand& cmd);
     void Hook_StartupServer(const GameSessionConfiguration_t& config, ISource2WorldSession*, const char*);
 
+    
+
   private:
     ISmmAPI* _metamod{ };
     LoggingChannelID_t _log;
 };
 
 PLUGIN_GLOBALVARS();
+
+inline IGameEventSystem* g_pGameEventSystem = nullptr;
+
+void PrintToChat(int ent_index, const char* content, bool stop_sound) {UTIL_PrintToChat(ent_index, content, stop_sound);}
+PLUGIN_EXPORT void PrintToChat(int ent_index, const char* content, bool stop_sound);

@@ -194,3 +194,32 @@ void Plugin::Hook_StartupServer(const GameSessionConfiguration_t& config, ISourc
     g_pEntitySystem = GameEntitySystem();
     gpGlobals = g_pNetworkGameServer->GetGlobals();
 }
+
+#define DeclareNetMessage(name, var)                                \
+    const auto net = g_pNetworkMessages->FindNetworkMessagePartial(#name); \
+    if (net == nullptr) [[unlikely]] { spdlog::error("Failed to network message {}", #name); return; }\
+    name var{};
+
+#define SendMessageFilter() \
+    g_send_message = true; \
+    g_pGameEventSystem->PostEventAbstract(0, false, filter, net, &msg, 0); \
+    g_send_message = false; \
+
+#define SendMessageBitWide() \
+    g_send_message = true; \
+    g_pGameEventSystem->PostEventAbstract(0, false, bitwide, &clients, net, &msg, 0, NetChannelBufType_t::BUF_RELIABLE);\
+    g_send_message = false; \
+
+void UTIL_PrintToChat(int ent_index, std::string_view content, bool stop_sound)
+{
+    DeclareNetMessage(CUserMessageSayText2, msg);
+
+    msg.set_chat(!stop_sound);
+    msg.set_entityindex(ent_index);
+    msg.set_messagename(content.data());
+
+    const std::uint8_t bitwide = ent_index;
+    const uint64 clients = 1 << ent_index;
+
+    SendMessageBitWide();
+}
