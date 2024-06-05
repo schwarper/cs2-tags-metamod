@@ -126,7 +126,6 @@ target_include_directories(hl2sdk INTERFACE
 
 # Target: plugin
 set(plugin_SOURCES
-	"hl2sdk/tier1/convar.cpp"
 	"hl2sdk/tier1/generichash.cpp"
 	"hl2sdk/tier1/keyvalues3.cpp"
 	"hl2sdk/entity2/entityidentity.cpp"
