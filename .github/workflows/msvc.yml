@@ -25,6 +25,10 @@ jobs:
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: cmake -A x64 -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
+    - name: Protobuf
+      # Build protobuf
+      run: protobuf_gen.bat
+  
     - name: Build
       # Build your program with the given configuration
       run: cmake --build build --config ${{env.BUILD_TYPE}}
