@@ -71,7 +71,6 @@ alias = "hl2sdk::hl2sdk"
 [target.plugin]
 type = "shared"
 sources = [
-  "hl2sdk/tier1/convar.cpp",
   "hl2sdk/tier1/generichash.cpp",
   "hl2sdk/tier1/keyvalues3.cpp",
   "hl2sdk/entity2/entityidentity.cpp",
