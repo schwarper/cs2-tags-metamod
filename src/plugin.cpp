@@ -73,22 +73,6 @@ bool Plugin::Load(PluginId id, ISmmAPI* ismm, char* error, size_t maxlen, bool l
     std::string_view game_name = gamedirpath_sv.substr(gamedirpath_sv.find_last_of("/\\") + 1);
     spdlog::info("GameDirPath: {}, {}", gamedirpath_sv, game_name);
 
-    g_pGameConfig = std::make_unique<CGameConfig>(game_name.data(), "addons/plugin/plugin.game.txt");
-    if (!g_pGameConfig->Init(g_pFullFileSystem))
-        return false;
-
-    if (!addresses::Initialize())
-    {
-        spdlog::error("Failed to initialize addresses");
-        return false;
-    }
-
-    if (!InitGameSystems())
-    {
-        spdlog::error("Failed to initialize GameSystem");
-        return false;
-    }
-
     SH_ADD_HOOK(IServerGameDLL, GameFrame, g_pSource2Server, SH_MEMBER(this, &Plugin::Hook_GameFrame), true);
     SH_ADD_HOOK(IServerGameClients, ClientActive, g_pSource2GameClients, SH_MEMBER(this, &Plugin::Hook_ClientActive), true);
     SH_ADD_HOOK(IServerGameClients, ClientDisconnect, g_pSource2GameClients, SH_MEMBER(this, &Plugin::Hook_ClientDisconnect), true);
